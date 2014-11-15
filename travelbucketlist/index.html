@@ -8,7 +8,9 @@
     <meta name="mobile-web-app-capable" content="yes" />
 
     <!-- Fonts -->
-    
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/font/roboto-regular.css" />
+
     <!-- jQueryMobileCSS - original with styling -->
     <!--link rel="stylesheet" href="css/jquery.mobile-1.3.1.min.css" />-->
 
@@ -39,15 +41,8 @@
 
             loadItems();
 
-            function loadItems(){
-                travelbucketlists.fetch(
-                function(err, data) { // Success
-                    if (err) {
-                        alert("read failed, Lets fetch from local storage");
-                        var storageItem = localStorage.getItem("travelStoragelists");
-                        $('#bucketlist').html(storageItem);
-                    } else {
-                        $('#bucketlist').empty();
+            function listItems(){
+                $('#bucketlist').empty();
                         while(travelbucketlists.hasNextEntity()) {
                             var travelitem = travelbucketlists.getNextEntity();
                             $('#bucketlist').append('<li><a href="#page-add">'+ travelitem.get('title')+'</a></li>')
@@ -55,6 +50,20 @@
                         //    alert(travelitem.get("title")); // Output the title of the book
                         }
                         $('#bucketlist').listview("refresh");
+            }
+            function loadItems(){
+                travelbucketlists.fetch(
+                function(err, data) { // Success
+                    if (err) {
+                        alert("read failed, Lets fetch from local storage");
+                        var storageItem = localStorage.getItem("travelStoragelists");
+                        travelbucketlists = client.restoreCollection(storageItem);
+                        travelbucketlists.resetEntityPointer();
+                        listItems();
+                       // $('#bucketlist').html(storageItem);
+
+                    } else {
+                        listItems();
 
                         //localStorage.setItem("travelStoragelists", $('#bucketlist').html());
                         localStorage.setItem("travelStoragelists",travelbucketlists.serialize());
