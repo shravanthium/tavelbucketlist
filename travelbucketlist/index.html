@@ -56,7 +56,8 @@
                         }
                         $('#bucketlist').listview("refresh");
 
-                        localStorage.setItem("travelStoragelists", $('#bucketlist').html());
+                        //localStorage.setItem("travelStoragelists", $('#bucketlist').html());
+                        localStorage.setItem("travelStoragelists",travelbucketlists.serialize());
                     }
                 });
 
